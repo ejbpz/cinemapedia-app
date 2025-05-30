@@ -70,6 +70,12 @@ class _CustomSliverAppBar extends StatelessWidget {
         onPressed: () => context.pop(),
         icon: Icon(Icons.navigate_before),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {}, 
+          icon: Icon(Icons.favorite_outline, color: Colors.white)
+        )
+      ],
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,
       flexibleSpace: FlexibleSpaceBar(
@@ -100,20 +106,14 @@ class _CustomSliverAppBar extends StatelessWidget {
                 )
               ),
             ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    stops: [0.0, 0.3],
-                    begin: Alignment.topLeft,
-                    colors: [
-                      Colors.black87,
-                      Colors.transparent,
-                    ]
-                  )
-                )
-              ),
-            )
+            const _CustomGradient(
+              stops: [0.0, 0.2],
+              colors: [Colors.black87, Colors.transparent],
+            ),
+            const _CustomGradient(
+              stops: [0.8, 1.0],
+              colors: [Colors.transparent, Colors.black12],
+            ),
           ],
         ),
       ),
@@ -244,6 +244,36 @@ class _ActorByMovie extends ConsumerWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _CustomGradient extends StatelessWidget {
+  final List<double> stops;
+  final List<Color> colors;
+  final Alignment begin;
+  final Alignment end;
+
+  const _CustomGradient({
+    required this.stops, 
+    required this.colors,
+    this.begin = Alignment.topCenter, 
+    this.end = Alignment.bottomCenter
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            stops: stops,
+            begin: begin,
+            end: end,
+            colors: colors
+          )
+        )
       ),
     );
   }
