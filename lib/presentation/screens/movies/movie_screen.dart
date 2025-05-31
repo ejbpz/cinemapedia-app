@@ -55,13 +55,19 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int movieId) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return localStorageRepository.isMovieFavorite(movieId);
+});
+
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
 
   const _CustomSliverAppBar({required this.movie});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavoriteMovie = ref.watch(isFavoriteProvider(movie.id));
     final size = MediaQuery.of(context).size;
 
     return SliverAppBar(
@@ -72,8 +78,17 @@ class _CustomSliverAppBar extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {}, 
-          icon: Icon(Icons.favorite_outline, color: Colors.white)
+          onPressed: () async {
+            await ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
+            ref.invalidate(isFavoriteProvider(movie.id));
+          }, 
+          icon: isFavoriteMovie.when(
+            loading: () => const CircularProgressIndicator(strokeWidth: 2),
+            data: (data) => data 
+              ? Icon(Icons.favorite, color: Colors.red) 
+              : Icon(Icons.favorite_outline, color: Colors.white), 
+            error: (_, __) => throw UnimplementedError(), 
+          )
         )
       ],
       backgroundColor: Colors.black,
