@@ -33,13 +33,14 @@ class CustomBottomNavigationBar extends StatelessWidget {
       elevation: 0,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_max_outlined),
+          icon: Icon(Icons.desktop_windows_outlined),
+          activeIcon: Icon(Icons.desktop_windows),
           label: 'Inicio',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.label_outline), 
-          activeIcon: Icon(Icons.label), 
-          label: 'Categorías',
+          icon: Icon(Icons.rocket_launch_outlined), 
+          activeIcon: Icon(Icons.rocket_launch_rounded), 
+          label: 'Populares',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.favorite_outline), 
